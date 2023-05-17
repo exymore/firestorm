@@ -2,6 +2,7 @@
 import CurrencyInput from '@/components/currency-input';
 import { useState } from 'react';
 import { Currency, CurrencyResponseData } from '@/src/types/currency';
+import { Dropdown, DropdownItem } from '@tremor/react';
 
 const CURRENCY_RESPONSE_RATES: CurrencyResponseData = {
   CAD: 1.355653,
@@ -41,7 +42,7 @@ export default function Home() {
   };
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col'>
       {defaultCurrencies.map((currency) => {
         return (
           <div key={currency.sign} className='pb-3'>
@@ -53,6 +54,15 @@ export default function Home() {
           </div>
         );
       })}
+
+      <Dropdown
+        className='mt-2'
+        onValueChange={(value) => console.log('The selected value is', value)}
+        placeholder='Добавить валюту'
+      >
+        <DropdownItem value='1' text='Transparent' />
+        <DropdownItem value='2' text='Outline' />
+      </Dropdown>
     </div>
   );
 }

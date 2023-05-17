@@ -1,7 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import Sidebar from '@/components/sidebar';
-import { ThemeContextProvider } from '@/src/context/theme-context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,15 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ThemeContextProvider>
-      <html lang='en'>
-        <body className={inter.className}>
-          <div className='flex flex-row '>
-            <Sidebar />
-            <div className='relative left-80 px-6 py-6'>{children}</div>
-          </div>
-        </body>
-      </html>
-    </ThemeContextProvider>
+    <html lang='en'>
+      <body className={inter.className}>
+        <div className='flex flex-row '>
+          <Sidebar />
+          <div className='relative left-80 px-6 py-6'>{children}</div>
+        </div>
+      </body>
+    </html>
   );
 }
