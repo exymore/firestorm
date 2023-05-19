@@ -6,7 +6,7 @@ const CurrencyInput = ({ currency, value, onChange }: CurrencyInputProps) => {
   return (
     <>
       <div className='flex flex-row items-center'>
-        <span className='text-slate-700 dark:text-slate-200 pr-3 font-bold'>
+        <span className='text-slate-700 dark:text-slate-200 pr-3 w-12 font-bold'>
           {currency.name}
         </span>
         <CurrencyInputField
