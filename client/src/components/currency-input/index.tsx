@@ -34,9 +34,6 @@ function CurrencyInput({
             decimalSeparator="."
             disableAbbreviations
             onValueChange={(value) => onChange(value, currency)}
-            onBlur={(e) => {
-              onChange(value, currency);
-            }}
           />
         </div>
         <div className="flex flex-col items-end">

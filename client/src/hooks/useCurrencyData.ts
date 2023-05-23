@@ -13,7 +13,6 @@ export function useCurrencyData() {
   }, [latestRates]);
 
   const onChangeCurrencyData = (inputValue = '0', currency: Currency) => {
-    console.log('currency', currency);
     const updatedCurrencyData = Object.entries(currencyData).map((curr) => {
       let newCurrencyValue;
       const currentCurrencyRate = latestRates?.data[curr[0]] ?? 0;
@@ -25,7 +24,7 @@ export function useCurrencyData() {
         newCurrencyValue = (
           (currentCurrencyRate / changedCurrencyRate) *
           +inputValue
-        ).toFixed(4);
+        ).toFixed(3);
       }
       return [curr[0], newCurrencyValue];
     });

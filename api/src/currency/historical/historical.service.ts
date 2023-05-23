@@ -20,7 +20,15 @@ export class HistoricalService {
   ) {}
 
   async getLatestRates() {
-    return this.historicalModel.findOne({}, {}, { sort: { date: -1 } });
+    const response = await this.historicalModel.findOne(
+      {},
+      {},
+      { sort: { date: -1 } },
+    );
+    for (const [key, value] of Object.entries(response.data)) {
+      response.data[key] = +value.toFixed(3);
+    }
+    return response;
   }
 
   async updateLatestRates() {
