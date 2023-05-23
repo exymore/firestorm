@@ -1,12 +1,17 @@
 export type Currency = {
+  _id: string;
   name: string;
   sign: string;
 };
+export type CurrencyList = Array<Currency>;
 
-export type CurrencyResponseData = Record<string, number>;
-
-export type CurrencyInputProps = {
-  currency: Currency;
-  value: string;
-  onChange: (inputValue: string | undefined, currency: Currency) => void;
+export type HistoricalRatesDataItem = {
+  [key: string]: number;
 };
+
+export type HistoricalRatesListItem = {
+  _id: string;
+  date: string;
+  data: HistoricalRatesDataItem;
+};
+export type HistoricalRatesList = Array<HistoricalRatesListItem>;

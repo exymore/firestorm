@@ -19,6 +19,10 @@ export class HistoricalService {
     private readonly httpService: HttpService,
   ) {}
 
+  async getLatestRates() {
+    return this.historicalModel.findOne({}, {}, { sort: { date: -1 } });
+  }
+
   async updateLatestRates() {
     const today = dayjs().format(this.dateFormat);
     const rates = await this.getLatestRatesFromApi();
@@ -43,6 +47,7 @@ export class HistoricalService {
       start = this.getStartDate(end);
       end = this.getEndDate(end);
 
+      // To be ok with API rate limit
       await this.sleepFor(20000);
     }
   }

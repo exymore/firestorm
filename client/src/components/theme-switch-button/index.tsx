@@ -1,6 +1,6 @@
 import { Icon } from '@tremor/react';
 import { useContext } from 'react';
-import ThemeContext from '@/src/context/theme-context';
+import ThemeContext from '@/context/theme-context';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 
 export default function ThemeSwitchButton() {
@@ -8,10 +8,10 @@ export default function ThemeSwitchButton() {
   const SwitchThemeIcon = isDarkTheme ? SunIcon : MoonIcon;
 
   return (
-    <button className='h-7 w-7 cursor-pointer' onClick={toggleThemeHandler}>
+    <button className="h-7 w-7" onClick={toggleThemeHandler}>
       <Icon
         icon={SwitchThemeIcon}
-        className='text-blue-800 hover:text-blue-400 dark:text-gray-50 dark:hover:text-gray-400'
+        className="text-blue-800 hover:text-blue-400 dark:text-gray-50 dark:hover:text-gray-400"
       />
     </button>
   );

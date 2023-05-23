@@ -1,7 +1,33 @@
 {
   "extends": [
-    "prettier",
+    "plugin:prettier/recommended",
     "next/core-web-vitals",
     "plugin:@next/next/recommended"
-  ]
+  ],
+  "plugins": [
+    "react",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true
+      }
+    ],
+    "import/extensions": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/state-in-constructor": "off",
+    "no-underscore-dangle": "off"
+  }
 }

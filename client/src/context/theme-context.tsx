@@ -1,4 +1,5 @@
 'use client';
+
 import React, { createContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext({
@@ -6,7 +7,7 @@ const ThemeContext = createContext({
   toggleThemeHandler: () => {},
 });
 
-export const ThemeContextProvider = (props: React.PropsWithChildren) => {
+export function ThemeContextProvider(props: React.PropsWithChildren) {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
   useEffect(() => initialThemeHandler());
 
@@ -16,23 +17,21 @@ export const ThemeContextProvider = (props: React.PropsWithChildren) => {
 
   function initialThemeHandler(): void {
     if (isLocalStorageEmpty()) {
-      localStorage.setItem('isDarkTheme', `true`);
+      localStorage.setItem('isDarkTheme', 'true');
       document.querySelector('body')?.classList?.add('dark');
       setIsDarkTheme(true);
     } else {
       const isDarkTheme: boolean = JSON.parse(
-        localStorage.getItem('isDarkTheme')!,
+        localStorage.getItem('isDarkTheme')!
       );
       isDarkTheme && document.querySelector('body')?.classList?.add('dark');
-      setIsDarkTheme(() => {
-        return isDarkTheme;
-      });
+      setIsDarkTheme(() => isDarkTheme);
     }
   }
 
   function toggleThemeHandler(): void {
     const isDarkTheme: boolean = JSON.parse(
-      localStorage.getItem('isDarkTheme')!,
+      localStorage.getItem('isDarkTheme')!
     );
     setIsDarkTheme(!isDarkTheme);
     toggleDarkClassToBody();
@@ -48,12 +47,10 @@ export const ThemeContextProvider = (props: React.PropsWithChildren) => {
   }
 
   return (
-    <ThemeContext.Provider
-      value={{ isDarkTheme: isDarkTheme, toggleThemeHandler }}
-    >
+    <ThemeContext.Provider value={{ isDarkTheme, toggleThemeHandler }}>
       {props.children}
     </ThemeContext.Provider>
   );
-};
+}
 
 export default ThemeContext;
