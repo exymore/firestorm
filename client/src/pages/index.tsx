@@ -5,12 +5,7 @@ import useCurrencyStore from '@/store';
 import { useEffect } from 'react';
 
 export default function Home() {
-  const {
-    latestRates,
-    selectedCurrencyList,
-    fetchCurrencyList,
-    fetchLatestRates,
-  } = useCurrencyStore();
+  const { fetchCurrencyList, fetchLatestRates } = useCurrencyStore();
 
   useEffect(() => {
     fetchCurrencyList();

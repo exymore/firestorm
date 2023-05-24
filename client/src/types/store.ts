@@ -1,11 +1,15 @@
-import { Currency, HistoricalRatesDataItem } from '@/types/currency';
+import {
+  Currency,
+  HistoricalRatesDataItem,
+  HistoricalRatesList,
+} from '@/types/currency';
 
 export type CurrencyState = {
   currencyList: Array<Currency>;
   currencyListLoading: boolean;
   selectedCurrencyList: Array<Currency>;
 
-  latestRates: HistoricalRatesDataItem;
+  lastWeekRates: HistoricalRatesList;
   latestRatesLoading: boolean;
   convertedCurrencyData: HistoricalRatesDataItem;
 

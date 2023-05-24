@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Grid numColsSm={1} numColsMd={12}>
+    <Grid numColsSm={1} numColsMd={12} className="h-screen">
       <Col numColSpanMd={2}>
         <Sidebar />
       </Col>

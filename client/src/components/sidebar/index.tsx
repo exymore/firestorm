@@ -15,7 +15,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <nav className="border-r dark:border-slate-800">
+    <nav className="border-r h-full dark:border-slate-800">
       <div className="flex flex-col h-full">
         <div className="h-20 flex justify-between items-center px-6">
           <h1 className="dark:text-slate-200 text-3xl font-bold">Firestorm</h1>

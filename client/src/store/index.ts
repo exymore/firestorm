@@ -6,13 +6,18 @@ import { Currency, CurrencyList } from '@/types/currency';
 
 export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'CAD'];
 
+export const todayRateSelector = (state: CurrencyState) =>
+  state.lastWeekRates[0]?.data;
+export const yesterdayRateSelector = (state: CurrencyState) =>
+  state.lastWeekRates[1]?.data;
+
 const useCurrencyStore = create<CurrencyState>()(
   devtools((set) => ({
     currencyList: [],
     currencyListLoading: true,
     selectedCurrencyList: [],
 
-    latestRates: {},
+    lastWeekRates: [],
     latestRatesLoading: true,
     convertedCurrencyData: {},
 
@@ -27,9 +32,9 @@ const useCurrencyStore = create<CurrencyState>()(
       set({ currencyListLoading: false });
     },
     fetchLatestRates: async () => {
-      const response = await CurrencyApi.fetchLatestRates();
-      set({ latestRates: response.data });
-      set({ convertedCurrencyData: response.data });
+      const latestRates = await CurrencyApi.fetchLatestRates();
+      set({ lastWeekRates: latestRates });
+      set({ convertedCurrencyData: latestRates[0].data });
       set({ latestRatesLoading: false });
     },
     addCurrencyToList: (currencySign) =>

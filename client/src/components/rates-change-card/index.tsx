@@ -1,49 +1,80 @@
-import React from 'react';
-import { Bold, Card, Divider, Grid, Title } from '@tremor/react';
-import { TrendingUp } from 'lucide-react';
+import React, { useMemo } from 'react';
+import {
+  AreaChart,
+  BadgeDelta,
+  Card,
+  DeltaType,
+  Flex,
+  Grid,
+  Metric,
+  Text,
+  Title,
+} from '@tremor/react';
 import { Currency } from '@/types/currency';
-import { Skeleton } from '@/components/ui/skeleton';
-import useCurrencyStore from '@/store';
+import useCurrencyStore, {
+  todayRateSelector,
+  yesterdayRateSelector,
+} from '@/store';
+import dayjs from 'dayjs';
 
-type RateTextProps = {
-  text?: string;
-};
-
-type RatesChangeValueProps = {
+type RatesChangeBlockProps = {
   currency: Currency;
 };
 
-const RateText = ({ text }: RateTextProps) => {
-  const { latestRates } = useCurrencyStore();
-  const shouldShowRate = text && !Number.isNaN(+text) && latestRates;
+const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
+  const latestRate = useCurrencyStore(todayRateSelector)?.[currency.sign];
+  const yesterdayRate = useCurrencyStore(yesterdayRateSelector)?.[
+    currency.sign
+  ];
+  const { lastWeekRates } = useCurrencyStore();
 
-  if (shouldShowRate)
-    return (
-      <>
-        <Bold>{text}</Bold>
-        <TrendingUp size={16} className="ml-1 inline-flex" />
-      </>
-    );
+  const chartData = useMemo(() => {
+    return lastWeekRates.map((item) => ({
+      date: dayjs(item.date).format('MMM D'),
+      value: item.data[currency.sign],
+    }));
+  }, [currency.sign, lastWeekRates]);
 
-  return <Skeleton className="h-4 w-[100px]" />;
-};
+  const diffInPercents = (latestRate / yesterdayRate - 1) * 100;
+  const currencyToUsdRate = latestRate?.toFixed(3);
 
-const RatesChangeValue = ({ currency }: RatesChangeValueProps) => {
-  const { latestRates } = useCurrencyStore();
-
-  const usdToCurrencyRate = (1 / latestRates?.[currency.sign])?.toFixed(3);
-  const currencyToUsdRate = latestRates?.[currency.sign]?.toFixed(3);
+  const delta = latestRate - yesterdayRate;
+  let deltaType: DeltaType = 'unchanged';
+  if (delta > 0) {
+    deltaType = 'moderateIncrease';
+  } else if (delta < 0) {
+    deltaType = 'moderateDecrease';
+  }
 
   return (
-    <>
-      <Card>
+    <Card>
+      <Flex>
         <Title>USD / {currency.sign}</Title>
-        <RateText text={currencyToUsdRate} />
-        <Divider />
-        <Title>{currency.sign} / USD</Title>
-        <RateText text={usdToCurrencyRate} />
-      </Card>
-    </>
+        <Flex flexDirection="col" justifyContent="end" alignItems="end">
+          <Text>From yesterday</Text>
+          <BadgeDelta deltaType={deltaType}>
+            {diffInPercents.toFixed(2)}%
+          </BadgeDelta>
+        </Flex>
+      </Flex>
+
+      <Metric>{currencyToUsdRate}</Metric>
+      {chartData.length && (
+        <AreaChart
+          className="mt-2 h-28"
+          data={chartData.reverse()}
+          index="date"
+          categories={['value']}
+          colors={['blue']}
+          autoMinValue
+          showXAxis={true}
+          showGridLines={false}
+          startEndOnly={true}
+          showYAxis={false}
+          showLegend={false}
+        />
+      )}
+    </Card>
   );
 };
 
@@ -53,11 +84,11 @@ const RatesChangeCard = () => {
   return (
     <Card className="h-full w-full">
       <Title className="mb-3">Rates change</Title>
-      <Grid numColsLg={4} numColsSm={1} className="gap-3">
+      <Grid numColsLg={3} numColsSm={1} className="gap-3">
         {selectedCurrencyList
           .filter((currency) => currency.sign !== 'USD')
           .map((currency) => (
-            <RatesChangeValue key={currency.sign} currency={currency} />
+            <RatesChangeBlock key={currency.sign} currency={currency} />
           ))}
       </Grid>
     </Card>
