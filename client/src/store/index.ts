@@ -59,23 +59,22 @@ const useCurrencyStore = create<CurrencyState>()(
       }),
     onChangeCurrencyData: (inputValue = '0', currency) =>
       set((state) => {
-        const updatedCurrencyData = Object.entries(state.latestRates).map(
-          (curr) => {
-            let newCurrencyValue;
-            const currentCurrencyRate = state.latestRates[curr[0]] ?? 0;
-            const changedCurrencyRate = state.latestRates[currency.sign] ?? 0;
+        const latestRates = state.lastWeekRates[0].data;
+        const updatedCurrencyData = Object.entries(latestRates).map((curr) => {
+          let newCurrencyValue;
+          const currentCurrencyRate = latestRates[curr[0]] ?? 0;
+          const changedCurrencyRate = latestRates[currency.sign] ?? 0;
 
-            if (curr[0] === currency.sign) {
-              newCurrencyValue = inputValue;
-            } else {
-              newCurrencyValue = (
-                (currentCurrencyRate / changedCurrencyRate) *
-                +inputValue
-              ).toFixed(3);
-            }
-            return [curr[0], newCurrencyValue];
+          if (curr[0] === currency.sign) {
+            newCurrencyValue = inputValue;
+          } else {
+            newCurrencyValue = (
+              (currentCurrencyRate / changedCurrencyRate) *
+              +inputValue
+            ).toFixed(3);
           }
-        );
+          return [curr[0], newCurrencyValue];
+        });
 
         return {
           convertedCurrencyData: Object.fromEntries(updatedCurrencyData),
