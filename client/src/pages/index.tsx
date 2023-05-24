@@ -1,35 +1,49 @@
-import { useCurrencyData } from '@/hooks/useCurrencyData';
-import CurrencyInput from '@/components/currency-input';
-import AddCurrencySelect from '@/components/add-currency-select';
-import { useCurrencyList } from '@/hooks/useCurrencyList';
+import { Card, Col, Grid, LineChart, Title } from '@tremor/react';
+import ConverterCard from '@/components/converter-card';
+import RatesChangeCard from '@/components/rates-change-card';
+import useCurrencyStore from '@/store';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const { currencyData, onChangeCurrencyData } = useCurrencyData();
-
   const {
-    currencyToAddList,
+    latestRates,
     selectedCurrencyList,
-    handleAddCurrencyToList,
-    handleDeleteFromCurrencyList,
-  } = useCurrencyList();
+    fetchCurrencyList,
+    fetchLatestRates,
+  } = useCurrencyStore();
+
+  useEffect(() => {
+    fetchCurrencyList();
+    fetchLatestRates();
+  }, []);
 
   return (
-    <div className="flex flex-col">
-      {selectedCurrencyList.map((currency) => (
-        <div key={currency.sign} className="pb-3">
-          <CurrencyInput
-            currency={currency}
-            value={String(currencyData[currency.sign])}
-            onChange={onChangeCurrencyData}
-            handleDeleteFromCurrencyList={handleDeleteFromCurrencyList}
-          />
-        </div>
-      ))}
+    <>
+      <Grid numColsLg={6} numColsMd={1} className="gap-6">
+        <Col numColSpanLg={2}>
+          <ConverterCard />
+        </Col>
 
-      <AddCurrencySelect
-        currencyToAddList={currencyToAddList}
-        handleAddCurrencyToList={handleAddCurrencyToList}
-      />
-    </div>
+        <Col numColSpanLg={4}>
+          <RatesChangeCard />
+        </Col>
+      </Grid>
+
+      <Grid className="my-8">
+        <Col>
+          <Card>
+            <Title>Rates change chart</Title>
+            <LineChart
+              className="mt-6"
+              data={[]}
+              index=""
+              categories={[]}
+              colors={[]}
+              yAxisWidth={40}
+            />
+          </Card>
+        </Col>
+      </Grid>
+    </>
   );
 }

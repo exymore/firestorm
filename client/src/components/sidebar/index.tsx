@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Sidebar() {
@@ -15,7 +15,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 sm:w-80 h-full border-r space-y-8 dark:border-slate-800">
+    <nav className="border-r dark:border-slate-800">
       <div className="flex flex-col h-full">
         <div className="h-20 flex justify-between items-center px-6">
           <h1 className="dark:text-slate-200 text-3xl font-bold">Firestorm</h1>
@@ -34,7 +34,7 @@ export default function Sidebar() {
                     pathname === item.href && 'bg-gray-100'
                   } duration-150`}
                 >
-                  <ArrowPathIcon className="w-5 h-5 dark:text-slate-200" />
+                  <RefreshCw className="w-5 h-5 dark:text-slate-200" />
                   <span className="dark:text-slate-200">{item.name}</span>
                 </Link>
               </li>

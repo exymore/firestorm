@@ -2,20 +2,16 @@ import React, { memo } from 'react';
 import CurrencyInputField from 'react-currency-input-field';
 import { Currency } from '@/types/currency';
 import { MinusCircleIcon } from 'lucide-react';
+import useCurrencyStore from '@/store';
 
 type CurrencyInputProps = {
   currency: Currency;
   value: string;
-  onChange: (inputValue: string | undefined, currency: Currency) => void;
-  handleDeleteFromCurrencyList: (currencySign: string) => void;
 };
 
-function CurrencyInput({
-  currency,
-  value,
-  onChange,
-  handleDeleteFromCurrencyList,
-}: CurrencyInputProps) {
+function CurrencyInput({ currency, value }: CurrencyInputProps) {
+  const { onChangeCurrencyData, deleteFromCurrencyList } = useCurrencyStore();
+
   return (
     <div className="flex flex-row">
       <div className="flex flex-col">
@@ -24,7 +20,7 @@ function CurrencyInput({
             {currency.sign}
           </span>
           <CurrencyInputField
-            className="w-60 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-slate-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-slate-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             name="input-name"
             placeholder=""
             value={value}
@@ -33,7 +29,7 @@ function CurrencyInput({
             decimalsLimit={4}
             decimalSeparator="."
             disableAbbreviations
-            onValueChange={(value) => onChange(value, currency)}
+            onValueChange={(value) => onChangeCurrencyData(value, currency)}
           />
         </div>
         <div className="flex flex-col items-end">
@@ -45,7 +41,7 @@ function CurrencyInput({
 
       <button
         className="ml-3 mt-2 h-7 w-7"
-        onClick={() => handleDeleteFromCurrencyList(currency.sign)}
+        onClick={() => deleteFromCurrencyList(currency.sign)}
       >
         <MinusCircleIcon
           size={18}

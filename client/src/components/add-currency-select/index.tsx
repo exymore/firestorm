@@ -4,32 +4,33 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from '@/components/ui/select';
 import { Currency } from '@/types/currency';
+import useCurrencyStore from '@/store';
 
-type AddCurrencySelectProps = {
-  currencyToAddList: Currency[];
-  handleAddCurrencyToList: (value: string) => void;
-};
+const AddCurrencySelect = () => {
+  const { addCurrencyToList } = useCurrencyStore();
 
-const AddCurrencySelect = ({
-  currencyToAddList,
-  handleAddCurrencyToList,
-}: AddCurrencySelectProps) => {
+  const currencyToAddList = useCurrencyStore((state) => {
+    if (state) {
+      return state.currencyList?.filter(
+        (currency: Currency) =>
+          !state.selectedCurrencyList
+            ?.map((s: Currency) => s.sign)
+            ?.includes(currency.sign)
+      );
+    }
+    return [];
+  });
+
   return (
-    <Select onValueChange={handleAddCurrencyToList}>
-      <SelectTrigger className="w-[288px]">
-        <SelectValue placeholder="Add Currency" />
-      </SelectTrigger>
-
+    <Select onValueChange={addCurrencyToList}>
+      <SelectTrigger className="w-1/2">Add Currency</SelectTrigger>
       <SelectContent className="h-[300px]">
         {currencyToAddList.map((listItem: Currency) => (
-          <div key={listItem._id}>
-            <SelectItem value={listItem.sign}>
-              {`${listItem.name} (${listItem.sign})`}
-            </SelectItem>
-          </div>
+          <SelectItem key={listItem._id} value={listItem.sign}>
+            {`${listItem.name} (${listItem.sign})`}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>
