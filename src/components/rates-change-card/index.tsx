@@ -29,10 +29,12 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
   const { lastWeekRates } = useCurrencyStore();
 
   const chartData = useMemo(() => {
-    return lastWeekRates.map((item) => ({
-      date: dayjs(item.date).format('MMM D'),
-      value: item.data[currency.sign],
-    }));
+    return lastWeekRates
+      .map((item) => ({
+        date: dayjs(item.date).format('MMM D'),
+        value: item.data[currency.sign],
+      }))
+      .reverse();
   }, [currency.sign, lastWeekRates]);
 
   const diffInPercents = (latestRate / yesterdayRate - 1) * 100;
@@ -61,15 +63,16 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
       <Metric>{currencyToUsdRate}</Metric>
       {chartData.length && (
         <AreaChart
-          className="mt-2 h-28"
-          data={chartData.reverse()}
+          className="mt-4 h-32"
+          data={chartData}
+          curveType="natural"
           index="date"
           categories={['value']}
           colors={['blue']}
           autoMinValue
-          showXAxis={true}
+          showXAxis
           showGridLines={false}
-          startEndOnly={true}
+          startEndOnly
           showYAxis={false}
           showLegend={false}
         />

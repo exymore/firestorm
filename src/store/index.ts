@@ -2,9 +2,14 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { CurrencyApi } from '@/api';
 import { CurrencyState } from '@/types/store';
-import { Currency, CurrencyList } from '@/types/currency';
+import {
+  Currency,
+  CurrencyList,
+  HistoricalPeriods,
+  HistoricalRatesList,
+} from '@/types/currency';
 
-export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'CAD'];
+export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'GBP', 'CAD'];
 
 export const todayRateSelector = (state: CurrencyState) =>
   state.lastWeekRates[0]?.data;
@@ -21,13 +26,16 @@ const useCurrencyStore = create<CurrencyState>()(
     latestRatesLoading: true,
     convertedCurrencyData: {},
 
+    chartRates: [],
+    chartRatesLoading: true,
+
     fetchCurrencyList: async () => {
       const data: CurrencyList = await CurrencyApi.fetchCurrencyList();
       set({ currencyList: data });
       set({
-        selectedCurrencyList: data.filter((currency) =>
-          defaultCurrencyList.includes(currency.sign)
-        ),
+        selectedCurrencyList: data
+          .reverse()
+          .filter((currency) => defaultCurrencyList.includes(currency.sign)),
       });
       set({ currencyListLoading: false });
     },
@@ -80,6 +88,19 @@ const useCurrencyStore = create<CurrencyState>()(
           convertedCurrencyData: Object.fromEntries(updatedCurrencyData),
         };
       }),
+
+    fetchChartRates: async (
+      currencySign: string,
+      period: HistoricalPeriods
+    ) => {
+      set({ chartRates: [] });
+      const chartRates: HistoricalRatesList = await CurrencyApi.fetchChartRates(
+        currencySign,
+        period
+      );
+      set({ chartRates });
+      set({ chartRatesLoading: false });
+    },
   }))
 );
 

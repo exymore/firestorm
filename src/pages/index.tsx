@@ -1,11 +1,13 @@
-import { Card, Col, Grid, LineChart, Title } from '@tremor/react';
+import { Col, Grid } from '@tremor/react';
 import ConverterCard from '@/components/converter-card';
 import RatesChangeCard from '@/components/rates-change-card';
 import useCurrencyStore from '@/store';
 import { useEffect } from 'react';
+import RatesChart from '@/components/rates-chart';
 
 export default function Home() {
-  const { fetchCurrencyList, fetchLatestRates } = useCurrencyStore();
+  const { fetchCurrencyList, fetchLatestRates, fetchChartRates } =
+    useCurrencyStore();
 
   useEffect(() => {
     fetchCurrencyList();
@@ -26,17 +28,7 @@ export default function Home() {
 
       <Grid className="my-8">
         <Col>
-          <Card>
-            <Title>Rates change chart</Title>
-            <LineChart
-              className="mt-6"
-              data={[]}
-              index=""
-              categories={[]}
-              colors={[]}
-              yAxisWidth={40}
-            />
-          </Card>
+          <RatesChart />
         </Col>
       </Grid>
     </>

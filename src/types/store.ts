@@ -1,5 +1,6 @@
 import {
   Currency,
+  HistoricalPeriods,
   HistoricalRatesDataItem,
   HistoricalRatesList,
 } from '@/types/currency';
@@ -13,6 +14,9 @@ export type CurrencyState = {
   latestRatesLoading: boolean;
   convertedCurrencyData: HistoricalRatesDataItem;
 
+  chartRates: HistoricalRatesList;
+  chartRatesLoading: boolean;
+
   fetchCurrencyList: () => Promise<void>;
   fetchLatestRates: () => Promise<void>;
 
@@ -22,4 +26,9 @@ export type CurrencyState = {
     inputValue: string | undefined,
     currency: Currency
   ) => void;
+
+  fetchChartRates: (
+    currencySign: string,
+    period: HistoricalPeriods
+  ) => Promise<void>;
 };

@@ -15,3 +15,9 @@ export type HistoricalRatesListItem = {
   data: HistoricalRatesDataItem;
 };
 export type HistoricalRatesList = Array<HistoricalRatesListItem>;
+
+export enum HistoricalPeriods {
+  DAY = 'day',
+  MONTH = 'month',
+  YEAR = 'year',
+}
