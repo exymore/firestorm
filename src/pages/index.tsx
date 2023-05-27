@@ -1,18 +1,17 @@
 import { Col, Grid } from '@tremor/react';
-import ConverterCard from '@/components/converter-card';
-import RatesChangeCard from '@/components/rates-change-card';
+import ConverterCard from '../components/ConverterCard';
+import RatesChangeCard from '../components/RatesChangeCard';
 import useCurrencyStore from '@/store';
 import { useEffect } from 'react';
-import RatesChart from '@/components/rates-chart';
+import RatesChart from '@/components/RatesChart';
 
 export default function Home() {
-  const { fetchCurrencyList, fetchLatestRates, fetchChartRates } =
-    useCurrencyStore();
+  const { fetchCurrencyList, fetchLatestRates } = useCurrencyStore();
 
   useEffect(() => {
     fetchCurrencyList();
     fetchLatestRates();
-  }, []);
+  }, [fetchCurrencyList, fetchLatestRates]);
 
   return (
     <>

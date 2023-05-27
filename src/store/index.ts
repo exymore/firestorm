@@ -2,12 +2,8 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { CurrencyApi } from '@/api';
 import { CurrencyState } from '@/types/store';
-import {
-  Currency,
-  CurrencyList,
-  HistoricalPeriods,
-  HistoricalRatesList,
-} from '@/types/currency';
+import { Currency, CurrencyList, HistoricalRatesList } from '@/types/currency';
+import { FetchChartRates } from '@/types/api';
 
 export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'GBP', 'CAD'];
 
@@ -30,6 +26,8 @@ const useCurrencyStore = create<CurrencyState>()(
     chartRatesLoading: true,
 
     fetchCurrencyList: async () => {
+      set({ currencyListLoading: true });
+
       const data: CurrencyList = await CurrencyApi.fetchCurrencyList();
       set({ currencyList: data });
       set({
@@ -40,6 +38,8 @@ const useCurrencyStore = create<CurrencyState>()(
       set({ currencyListLoading: false });
     },
     fetchLatestRates: async () => {
+      set({ latestRatesLoading: true });
+
       const latestRates = await CurrencyApi.fetchLatestRates();
       set({ lastWeekRates: latestRates });
       set({ convertedCurrencyData: latestRates[0].data });
@@ -89,14 +89,22 @@ const useCurrencyStore = create<CurrencyState>()(
         };
       }),
 
-    fetchChartRates: async (
-      currencySign: string,
-      period: HistoricalPeriods
-    ) => {
+    fetchChartRates: async ({
+      currencySign,
+      period,
+      skip,
+      limit,
+    }: FetchChartRates) => {
       set({ chartRates: [] });
+      set({ chartRatesLoading: true });
+
       const chartRates: HistoricalRatesList = await CurrencyApi.fetchChartRates(
-        currencySign,
-        period
+        {
+          currencySign,
+          period,
+          skip,
+          limit,
+        }
       );
       set({ chartRates });
       set({ chartRatesLoading: false });

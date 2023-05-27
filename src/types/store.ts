@@ -1,9 +1,9 @@
 import {
   Currency,
-  HistoricalPeriods,
   HistoricalRatesDataItem,
   HistoricalRatesList,
 } from '@/types/currency';
+import { FetchChartRates } from '@/types/api';
 
 export type CurrencyState = {
   currencyList: Array<Currency>;
@@ -27,8 +27,10 @@ export type CurrencyState = {
     currency: Currency
   ) => void;
 
-  fetchChartRates: (
-    currencySign: string,
-    period: HistoricalPeriods
-  ) => Promise<void>;
+  fetchChartRates: ({
+    currencySign,
+    period,
+    skip,
+    limit,
+  }: FetchChartRates) => Promise<void>;
 };

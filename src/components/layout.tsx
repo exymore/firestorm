@@ -1,4 +1,4 @@
-import Sidebar from '@/components/sidebar';
+import Sidebar from './Sidebar';
 import { Col, Grid } from '@tremor/react';
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Title } from '@tremor/react';
-import CurrencyInput from '@/components/currency-input';
-import AddCurrencySelect from '@/components/add-currency-select';
+import CurrencyInput from '../CurrencyInput';
+import AddCurrencySelect from '../AddCurrencySelect';
 import { Currency } from '@/types/currency';
 import useCurrencyStore, { defaultCurrencyList } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
