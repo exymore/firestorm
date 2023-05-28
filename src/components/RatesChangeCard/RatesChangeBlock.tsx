@@ -9,7 +9,6 @@ import {
   AreaChart,
   BadgeDelta,
   Card,
-  DeltaType,
   Flex,
   Metric,
   Text,
@@ -36,16 +35,14 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
       .reverse();
   }, [currency.sign, lastWeekRates]);
 
-  const diffInPercents = (latestRate / yesterdayRate - 1) * 100;
-  const currencyToUsdRate = latestRate?.toFixed(3);
+  const currencyToUsdRate = latestRate?.toPrecision(4);
 
   const delta = latestRate - yesterdayRate;
-  let deltaType: DeltaType = 'unchanged';
-  if (delta > 0) {
-    deltaType = 'moderateIncrease';
-  } else if (delta < 0) {
-    deltaType = 'moderateDecrease';
-  }
+  const deltaType = useMemo(() => {
+    if (delta > 0) return 'moderateIncrease';
+    if (delta < 0) return 'moderateDecrease';
+    return 'unchanged';
+  }, [delta]);
 
   return (
     <Card>
@@ -53,9 +50,7 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
         <Title>USD / {currency.sign}</Title>
         <Flex flexDirection="col" justifyContent="end" alignItems="end">
           <Text>From yesterday</Text>
-          <BadgeDelta deltaType={deltaType}>
-            {diffInPercents.toFixed(2)}%
-          </BadgeDelta>
+          <BadgeDelta deltaType={deltaType}>{delta.toPrecision(1)}</BadgeDelta>
         </Flex>
       </Flex>
 
