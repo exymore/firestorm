@@ -1,13 +1,12 @@
-'use client';
+import SidebarItem from '@/components/Sidebar/SidebarItem';
 
-import { usePathname } from 'next/navigation';
-import { RefreshCw } from 'lucide-react';
-import Link from 'next/link';
+export type SidebarNavItem = {
+  name: string;
+  href: string;
+};
 
 export default function Sidebar() {
-  const pathname = usePathname();
-
-  const navigation = [
+  const navigation: SidebarNavItem[] = [
     {
       name: 'Currency converter',
       href: '/',
@@ -27,17 +26,7 @@ export default function Sidebar() {
         <div className="flex-1 flex flex-col h-full overflow-auto">
           <ul className="px-4 text-sm font-medium flex-1">
             {navigation.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={`dark:bg-slate-800 flex items-center gap-x-2 text-gray-600 p-3 rounded-lg hover:bg-gray-50 hover:dark:bg-gray-800 ${
-                    pathname === item.href && 'bg-gray-100'
-                  } duration-150`}
-                >
-                  <RefreshCw className="w-5 h-5 dark:text-slate-200" />
-                  <span className="dark:text-slate-200">{item.name}</span>
-                </Link>
-              </li>
+              <SidebarItem key={item.name} item={item} />
             ))}
           </ul>
         </div>

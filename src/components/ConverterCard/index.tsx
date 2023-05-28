@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Title } from '@tremor/react';
 import useCurrencyStore from '@/store';
-import ConverterCardSkeleton from './ConverterCardSkeleton';
+import ConverterCardSkeleton from '../Skeletons/ConverterCardSkeleton';
 import ConverterCardForm from './ConverterCardForm';
 
 const ConverterCard = () => {

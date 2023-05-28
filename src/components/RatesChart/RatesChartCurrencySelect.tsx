@@ -14,7 +14,7 @@ type CurrencySelectProps = {
   onCurrencyChange: (value: string) => void;
 };
 
-const CurrencySelect = ({
+const RatesChartCurrencySelect = ({
   selectedCurrency,
   onCurrencyChange,
 }: CurrencySelectProps) => {
@@ -39,4 +39,4 @@ const CurrencySelect = ({
   );
 };
 
-export default CurrencySelect;
+export default RatesChartCurrencySelect;

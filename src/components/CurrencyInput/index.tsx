@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import CurrencyInputField from 'react-currency-input-field';
 import { Currency } from '@/types/currency';
-import { MinusCircleIcon } from 'lucide-react';
 import useCurrencyStore from '@/store';
+import CurrencyInputDeleteButton from '@/components/CurrencyInput/CurrencyInputDeleteButton';
 
 type CurrencyInputProps = {
   currency: Currency;
@@ -32,6 +32,7 @@ function CurrencyInput({ currency, value }: CurrencyInputProps) {
             onValueChange={(value) => onChangeCurrencyData(value, currency)}
           />
         </div>
+
         <div className="flex flex-col items-end">
           <span className="pt-1 text-xs text-gray-500 dark:text-gray-400">
             {currency.name}
@@ -39,16 +40,10 @@ function CurrencyInput({ currency, value }: CurrencyInputProps) {
         </div>
       </div>
 
-      <button
-        className="ml-3 mt-2 h-7 w-7"
-        onClick={() => deleteFromCurrencyList(currency.sign)}
-      >
-        <MinusCircleIcon
-          size={18}
-          strokeWidth={2}
-          className="text-blue-800 hover:text-blue-400"
-        />
-      </button>
+      <CurrencyInputDeleteButton
+        currencySign={currency.sign}
+        deleteFromCurrencyList={deleteFromCurrencyList}
+      />
     </div>
   );
 }

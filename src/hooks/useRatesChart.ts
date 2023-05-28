@@ -13,7 +13,7 @@ type RatesChartDataItem = Pick<HistoricalRatesListItem, 'date'> & {
   [key: string]: string | number;
 };
 
-type RatesChartData = Array<RatesChartDataItem>;
+export type RatesChartData = Array<RatesChartDataItem>;
 
 function useRatesChart() {
   const { chartRates, currencyList, fetchChartRates } = useCurrencyStore();

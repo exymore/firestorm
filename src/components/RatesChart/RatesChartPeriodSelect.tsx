@@ -14,7 +14,7 @@ type PeriodSelectProps = {
   onPeriodChange: (value: HistoricalPeriods) => void;
 };
 
-const PeriodSelect = ({
+const RatesChartPeriodSelect = ({
   selectedPeriod,
   onPeriodChange,
 }: PeriodSelectProps) => {
@@ -36,4 +36,4 @@ const PeriodSelect = ({
   );
 };
 
-export default PeriodSelect;
+export default RatesChartPeriodSelect;

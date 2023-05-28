@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import { AreaChart, Card, Col, Flex, Grid, Title } from '@tremor/react';
-import { Skeleton } from '@/components/ui/skeleton';
-import RatesChartControls from '@/components/RatesChart/Controls';
-import CurrencySelect from '@/components/RatesChart/CurrencySelect';
-import PeriodSelect from '@/components/RatesChart/PeriodSelect';
+import { Card, Col, Flex, Grid, Title } from '@tremor/react';
+import RatesChartControls from '@/components/RatesChart/RatesChartControls';
+import RatesChartCurrencySelect from '@/components/RatesChart/RatesChartCurrencySelect';
+import RatesChartPeriodSelect from '@/components/RatesChart/RatesChartPeriodSelect';
 import useRatesChart from '@/hooks/useRatesChart';
+import RatesAreaChart from '@/components/RatesChart/RatesAreaChart';
+import RatesChartRangeText from '@/components/RatesChart/RatesChartRangeText';
 
 const RatesChart = () => {
   const {
@@ -32,16 +33,15 @@ const RatesChart = () => {
         <Col>
           <Title>Rates change chart</Title>
 
-          {chartRangeText ? (
-            <Title>{chartRangeText}</Title>
-          ) : (
-            <Skeleton className="h-7 w-72" />
-          )}
+          <RatesChartRangeText
+            show={chartData.length > 0}
+            text={chartRangeText}
+          />
         </Col>
 
         <Flex justifyContent="start" className="sm:mt-6 lg:mt-0 gap-2">
           <Title className="text-slate-800 whitespace-nowrap">USD /</Title>
-          <CurrencySelect
+          <RatesChartCurrencySelect
             selectedCurrency={selectedCurrency}
             onCurrencyChange={onCurrencyChange}
           />
@@ -54,28 +54,17 @@ const RatesChart = () => {
             limit={limit}
             selectedPeriod={selectedPeriod}
           />
-          <PeriodSelect
+          <RatesChartPeriodSelect
             selectedPeriod={selectedPeriod}
             onPeriodChange={onPeriodChange}
           />
         </Flex>
       </Grid>
 
-      {chartData.length ? (
-        <AreaChart
-          curveType="natural"
-          className="mt-6"
-          data={chartData}
-          index="date"
-          categories={[selectedCurrency]}
-          colors={['blue']}
-          showLegend={false}
-          autoMinValue
-          yAxisWidth={60}
-        />
-      ) : (
-        <Skeleton className="w-full h-80 mt-6" />
-      )}
+      <RatesAreaChart
+        chartData={chartData}
+        selectedCurrency={selectedCurrency}
+      />
     </Card>
   );
 };
