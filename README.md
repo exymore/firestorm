@@ -14,4 +14,5 @@
 **Available currencies:** 
 *AUD, BGN, BRL, CAD, CHF, CNY, CZK, DKK, EUR, GBP, HKD, HRK, HUF, IDR, ILS, INR, ISK, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PLN, RON, RUB, SEK, SGD, THB, TRY, USD, ZAR*
 
-<img width="1680" alt="Screenshot 2023-05-28 at 15 28 29" src="https://github.com/exymore/firestorm/assets/52958300/c9fd61c2-b550-41ab-96ee-954340879deb">
+
+<img width="1680" alt="Screenshot 2023-05-28 at 15 57 41" src="https://github.com/exymore/firestorm/assets/52958300/977505ee-c39e-495b-a028-838e67691a60">
