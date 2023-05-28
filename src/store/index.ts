@@ -32,8 +32,12 @@ const useCurrencyStore = create<CurrencyState>()(
       set({ currencyList: data });
       set({
         selectedCurrencyList: data
-          .reverse()
-          .filter((currency) => defaultCurrencyList.includes(currency.sign)),
+          .filter((currency) => defaultCurrencyList.includes(currency.sign))
+          .sort((a, b) => {
+            // USD should be always at top
+            if (a.sign === 'USD' || b.sign === 'USD') return -1;
+            return a.sign.localeCompare(b.sign);
+          }),
       });
       set({ currencyListLoading: false });
     },
