@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import CurrencyInputField from 'react-currency-input-field';
 import { Currency } from '@/types/currency';
 import useCurrencyStore from '@/store';
-import CurrencyInputDeleteButton from '@/components/CurrencyInput/CurrencyInputDeleteButton';
+import CurrencyInputDeleteButton from '@/modules/CurrencyInput/components/DeleteButton';
 
 type CurrencyInputProps = {
   currency: Currency;

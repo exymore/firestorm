@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Currency } from '@/types/currency';
+import { Currency, HistoricalRatesListItem } from '@/types/currency';
 import useCurrencyStore, {
   todayRateSelector,
   yesterdayRateSelector,
@@ -19,6 +19,12 @@ type RatesChangeBlockProps = {
   currency: Currency;
 };
 
+type RatesChartDataItem = Pick<HistoricalRatesListItem, 'date'> & {
+  value: number;
+};
+
+type RatesChartData = Array<RatesChartDataItem>;
+
 const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
   const latestRate = useCurrencyStore(todayRateSelector)?.[currency.sign];
   const yesterdayRate = useCurrencyStore(yesterdayRateSelector)?.[
@@ -27,12 +33,13 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
   const { lastWeekRates } = useCurrencyStore();
 
   const chartData = useMemo(() => {
-    return lastWeekRates
-      .map((item) => ({
-        date: dayjs(item.date).format('MMM D'),
-        value: item.data[currency.sign],
-      }))
-      .reverse();
+    return lastWeekRates.reduce<RatesChartData>((acc, rate) => {
+      acc.unshift({
+        date: dayjs(rate.date).format('MMM D'),
+        value: rate.data[currency.sign],
+      });
+      return acc;
+    }, []);
   }, [currency.sign, lastWeekRates]);
 
   const currencyToUsdRate = latestRate?.toPrecision(4);

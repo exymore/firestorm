@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { RefreshCw } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { SidebarNavItem } from '@/components/Sidebar/index';
+import { SidebarNavItem } from '@/modules/Sidebar';
 
 type SidebarItemProps = {
   item: SidebarNavItem;

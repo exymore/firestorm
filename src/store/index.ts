@@ -2,7 +2,12 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { CurrencyApi } from '@/api';
 import { CurrencyState } from '@/types/store';
-import { Currency, CurrencyList, HistoricalRatesList } from '@/types/currency';
+import {
+  Currency,
+  CurrencyList,
+  HistoricalRatesDataItem,
+  HistoricalRatesList,
+} from '@/types/currency';
 import { FetchChartRates } from '@/types/api';
 
 export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'GBP', 'CAD'];
@@ -46,7 +51,14 @@ const useCurrencyStore = create<CurrencyState>()(
 
       const latestRates = await CurrencyApi.fetchLatestRates();
       set({ lastWeekRates: latestRates });
-      set({ convertedCurrencyData: latestRates[0].data });
+
+      const todayRate = latestRates[0].data;
+      const convertedCurrencyData: HistoricalRatesDataItem = {};
+      for (const currency in todayRate) {
+        convertedCurrencyData[currency] = todayRate[currency].toPrecision(4);
+      }
+
+      set({ convertedCurrencyData });
       set({ latestRatesLoading: false });
     },
     addCurrencyToList: (currencySign) =>

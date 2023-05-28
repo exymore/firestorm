@@ -1,27 +1,20 @@
 import React, { useMemo } from 'react';
-import { Flex } from '@tremor/react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { HistoricalPeriods } from '@/types/currency';
 import dayjs from 'dayjs';
 import useCurrencyStore from '@/store';
+import useRatesChart from '@/hooks/useRatesChart';
 
 const LAST_DATE_AVAILABLE = dayjs('2004-05-27');
 
 type RatesChartControlsProps = {
-  skip: number;
-  setSkip: (skip: number) => void;
-  limit: number;
   selectedPeriod: HistoricalPeriods;
 };
 
-const RatesChartControls = ({
-  skip,
-  setSkip,
-  limit,
-  selectedPeriod,
-}: RatesChartControlsProps) => {
+const RatesChartControls = ({ selectedPeriod }: RatesChartControlsProps) => {
   const { chartRates, chartRatesLoading } = useCurrencyStore();
+  const { skip, limit, setSkip } = useRatesChart();
 
   const show = useMemo(
     () => selectedPeriod !== HistoricalPeriods.YEAR,
@@ -44,7 +37,7 @@ const RatesChartControls = ({
 
   if (!show) return null;
   return (
-    <Flex justifyContent="end">
+    <div className="flex sm:justify-start lg:justify-end">
       <Button
         variant="outline"
         onClick={handleBack}
@@ -59,7 +52,7 @@ const RatesChartControls = ({
       >
         <ChevronRight width="22" />
       </Button>
-    </Flex>
+    </div>
   );
 };
 

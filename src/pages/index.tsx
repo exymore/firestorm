@@ -1,9 +1,9 @@
 import { Col, Grid } from '@tremor/react';
-import ConverterCard from '../components/ConverterCard';
-import RatesChangeCard from '../components/RatesChangeCard';
+import ConverterCard from '../modules/Converter';
+import RatesChangeCard from '../modules/RatesChangeCard';
 import useCurrencyStore from '@/store';
 import { useEffect } from 'react';
-import RatesChart from '@/components/RatesChart';
+import RatesChart from '../modules/RatesChart';
 
 export default function Home() {
   const { fetchCurrencyList, fetchLatestRates } = useCurrencyStore();

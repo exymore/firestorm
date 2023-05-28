@@ -1,10 +1,10 @@
 import useCurrencyStore from '@/store';
 import { Currency } from '@/types/currency';
-import CurrencyInput from '@/components/CurrencyInput';
-import AddCurrencySelect from '@/components/AddCurrencySelect';
+import CurrencyInput from '@/modules/CurrencyInput';
+import AddCurrencySelect from '../../AddCurrency';
 import React from 'react';
 
-const ConverterCardForm = () => {
+const ConverterCardInput = () => {
   const { selectedCurrencyList, convertedCurrencyData } = useCurrencyStore();
 
   return (
@@ -23,4 +23,4 @@ const ConverterCardForm = () => {
   );
 };
 
-export default ConverterCardForm;
+export default ConverterCardInput;

@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { Card, Col, Flex, Grid, Title } from '@tremor/react';
-import RatesChartControls from '@/components/RatesChart/RatesChartControls';
-import RatesChartCurrencySelect from '@/components/RatesChart/RatesChartCurrencySelect';
-import RatesChartPeriodSelect from '@/components/RatesChart/RatesChartPeriodSelect';
+import RatesChartControls from '@/modules/RatesChart/components/Controls';
+import RatesChartCurrencySelect from '@/modules/RatesChart/components/CurrencySelect';
+import RatesChartPeriodSelect from '@/modules/RatesChart/components/PeriodSelect';
 import useRatesChart from '@/hooks/useRatesChart';
-import RatesAreaChart from '@/components/RatesChart/RatesAreaChart';
-import RatesChartRangeText from '@/components/RatesChart/RatesChartRangeText';
+import RatesAreaChart from '@/modules/RatesChart/components/Chart';
+import RatesChartRangeText from '@/modules/RatesChart/components/RangeText';
 
 const RatesChart = () => {
   const {
@@ -14,10 +14,7 @@ const RatesChart = () => {
     selectedCurrency,
     onCurrencyChange,
 
-    skip,
-    limit,
     selectedPeriod,
-    setSkip,
     onPeriodChange,
   } = useRatesChart();
 
@@ -47,18 +44,13 @@ const RatesChart = () => {
           />
         </Flex>
 
-        <Flex justifyContent="end" className="gap-2">
-          <RatesChartControls
-            skip={skip}
-            setSkip={setSkip}
-            limit={limit}
-            selectedPeriod={selectedPeriod}
-          />
+        <div className="lg:justify-end flex items-center gap-2">
+          <RatesChartControls selectedPeriod={selectedPeriod} />
           <RatesChartPeriodSelect
             selectedPeriod={selectedPeriod}
             onPeriodChange={onPeriodChange}
           />
-        </Flex>
+        </div>
       </Grid>
 
       <RatesAreaChart

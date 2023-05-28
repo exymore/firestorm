@@ -1,4 +1,4 @@
-import SidebarItem from '@/components/Sidebar/SidebarItem';
+import SidebarItem from '@/modules/Sidebar/components/Item';
 
 export type SidebarNavItem = {
   name: string;
