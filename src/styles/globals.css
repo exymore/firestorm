@@ -81,8 +81,13 @@
     }
 }
 
+html, body {
+    overflow-x: hidden;
+}
 
 body {
+    position: relative;
+
     background: rgb(255, 255, 255);
     font-family: var(--inter-font);
 }

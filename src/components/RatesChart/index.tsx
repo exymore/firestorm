@@ -1,85 +1,24 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { AreaChart, Card, Flex, Title } from '@tremor/react';
-import useCurrencyStore from '@/store';
-import dayjs from 'dayjs';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { HistoricalPeriods, HistoricalRatesListItem } from '@/types/currency';
+import React, { useMemo } from 'react';
+import { AreaChart, Card, Col, Flex, Grid, Title } from '@tremor/react';
 import { Skeleton } from '@/components/ui/skeleton';
 import RatesChartControls from '@/components/RatesChart/Controls';
-
-const RATE_FORMATTERS = {
-  [HistoricalPeriods.DAY]: 'DD MMM YYYY',
-  [HistoricalPeriods.MONTH]: 'MMM YYYY',
-  [HistoricalPeriods.YEAR]: 'YYYY',
-};
-
-type RatesChartDataItem = Pick<HistoricalRatesListItem, 'date'> & {
-  [key: string]: string | number;
-};
-
-type RatesChartData = Array<RatesChartDataItem>;
+import CurrencySelect from '@/components/RatesChart/CurrencySelect';
+import PeriodSelect from '@/components/RatesChart/PeriodSelect';
+import useRatesChart from '@/hooks/useRatesChart';
 
 const RatesChart = () => {
-  const { chartRates, currencyList, fetchChartRates } = useCurrencyStore();
+  const {
+    chartData,
 
-  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
-  const [selectedPeriod, setSelectedPeriod] = useState<HistoricalPeriods>(
-    HistoricalPeriods.MONTH
-  );
-  const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(13);
-
-  const onCurrencyChange = (value: string) => setSelectedCurrency(value);
-  const onPeriodChange = (value: HistoricalPeriods) => {
-    if (value === HistoricalPeriods.MONTH) {
-      setSkip(0);
-      setLimit(13);
-    }
-    if (value === HistoricalPeriods.DAY) {
-      setSkip(0);
-      setLimit(31);
-    }
-
-    setSelectedPeriod(value);
-  };
-
-  useEffect(() => {
-    if (currencyList.length > 0) {
-      fetchChartRates({
-        currencySign: selectedCurrency,
-        period: selectedPeriod,
-        skip,
-        limit,
-      });
-    }
-  }, [
-    currencyList,
-    fetchChartRates,
     selectedCurrency,
-    selectedPeriod,
+    onCurrencyChange,
+
     skip,
     limit,
-  ]);
-
-  const chartData = useMemo(() => {
-    return chartRates.reduce<RatesChartData>((acc, item) => {
-      if (item.data?.[selectedCurrency]) {
-        const dataItem = {
-          date: dayjs(item.date).format(RATE_FORMATTERS[selectedPeriod]),
-          [selectedCurrency]: item.data[selectedCurrency],
-        };
-        acc.unshift(dataItem);
-      }
-      return acc;
-    }, []);
-  }, [chartRates, selectedCurrency, selectedPeriod]);
+    selectedPeriod,
+    setSkip,
+    onPeriodChange,
+  } = useRatesChart();
 
   const chartRangeText = useMemo(() => {
     if (chartData.length) {
@@ -89,8 +28,8 @@ const RatesChart = () => {
 
   return (
     <Card>
-      <Flex justifyContent="start">
-        <Flex alignItems="start" flexDirection="col">
+      <Grid numColsSm={1} numColsLg={3} className="gap-4">
+        <Col>
           <Title>Rates change chart</Title>
 
           {chartRangeText ? (
@@ -98,30 +37,14 @@ const RatesChart = () => {
           ) : (
             <Skeleton className="h-7 w-72" />
           )}
-        </Flex>
+        </Col>
 
-        <Flex justifyContent="center" className="gap-2">
-          <Title className="text-slate-800">USD /</Title>
-
-          <Select
-            defaultValue={selectedCurrency}
-            onValueChange={onCurrencyChange}
-          >
-            <SelectTrigger className="w-[240px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="h-[300px]">
-              <SelectGroup>
-                {currencyList
-                  .filter((currency) => currency.sign !== 'USD')
-                  .map((currency) => (
-                    <SelectItem key={currency.sign} value={currency.sign}>
-                      {`${currency.name} (${currency.sign})`}
-                    </SelectItem>
-                  ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <Flex justifyContent="start" className="sm:mt-6 lg:mt-0 gap-2">
+          <Title className="text-slate-800 whitespace-nowrap">USD /</Title>
+          <CurrencySelect
+            selectedCurrency={selectedCurrency}
+            onCurrencyChange={onCurrencyChange}
+          />
         </Flex>
 
         <Flex justifyContent="end" className="gap-2">
@@ -131,22 +54,12 @@ const RatesChart = () => {
             limit={limit}
             selectedPeriod={selectedPeriod}
           />
-          <Select defaultValue={selectedPeriod} onValueChange={onPeriodChange}>
-            <SelectTrigger className="w-[120px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {Object.values(HistoricalPeriods).map((period) => (
-                  <SelectItem key={period} value={period}>
-                    <span className="capitalize">{period}</span>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <PeriodSelect
+            selectedPeriod={selectedPeriod}
+            onPeriodChange={onPeriodChange}
+          />
         </Flex>
-      </Flex>
+      </Grid>
 
       {chartData.length ? (
         <AreaChart
