@@ -24,7 +24,7 @@ const AddCurrencySelect = () => {
   });
 
   return (
-    <Select onValueChange={addCurrencyToList}>
+    <Select value={''} onValueChange={addCurrencyToList}>
       <SelectTrigger className="w-1/2">Add Currency</SelectTrigger>
       <SelectContent className="h-[300px]">
         {currencyToAddList.map((listItem: Currency) => (
