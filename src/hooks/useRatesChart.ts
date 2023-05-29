@@ -1,21 +1,33 @@
-import useCurrencyStore from '@/store';
-import { useEffect, useMemo, useState } from 'react';
-import { HistoricalPeriods, HistoricalRatesListItem } from '@/types/currency';
 import dayjs from 'dayjs';
+import { useEffect, useMemo, useState } from 'react';
 
-const RATE_FORMATTERS = {
+import useCurrencyStore from '@/store';
+import { HistoricalPeriods } from '@/types/currency';
+import { RatesChartData } from '@/types/ratesChart';
+
+const rateFormatters = {
   [HistoricalPeriods.DAY]: 'DD MMM YYYY',
   [HistoricalPeriods.MONTH]: 'MMM YYYY',
   [HistoricalPeriods.YEAR]: 'YYYY',
 };
 
-type RatesChartDataItem = Pick<HistoricalRatesListItem, 'date'> & {
-  [key: string]: string | number;
+type UseRatesChart = {
+  chartData: RatesChartData;
+
+  selectedCurrency: string;
+  onCurrencyChange: (value: string) => void;
+
+  skip: number;
+  limit: number;
+  selectedPeriod: HistoricalPeriods;
+  setSkip: (value: number) => void;
+  onPeriodChange: (value: HistoricalPeriods) => void;
 };
 
-export type RatesChartData = Array<RatesChartDataItem>;
+type OnCurrencyChange = (value: string) => void;
+type OnPeriodChange = (value: HistoricalPeriods) => void;
 
-function useRatesChart() {
+function useRatesChart(): UseRatesChart {
   const { chartRates, currencyList, fetchChartRates } = useCurrencyStore();
 
   const [selectedCurrency, setSelectedCurrency] = useState<string>('EUR');
@@ -25,8 +37,9 @@ function useRatesChart() {
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(13);
 
-  const onCurrencyChange = (value: string) => setSelectedCurrency(value);
-  const onPeriodChange = (value: HistoricalPeriods) => {
+  const onCurrencyChange: OnCurrencyChange = (value: string) =>
+    setSelectedCurrency(value);
+  const onPeriodChange: OnPeriodChange = (value: HistoricalPeriods) => {
     if (value === HistoricalPeriods.MONTH) {
       setSkip(0);
       setLimit(13);
@@ -46,7 +59,7 @@ function useRatesChart() {
         period: selectedPeriod,
         skip,
         limit,
-      });
+      }).catch(console.error);
     }
   }, [
     currencyList,
@@ -61,7 +74,7 @@ function useRatesChart() {
     return chartRates.reduce<RatesChartData>((acc, item) => {
       if (item.data?.[selectedCurrency]) {
         const dataItem = {
-          date: dayjs(item.date).format(RATE_FORMATTERS[selectedPeriod]),
+          date: dayjs(item.date).format(rateFormatters[selectedPeriod]),
           [selectedCurrency]: item.data[selectedCurrency],
         };
         acc.unshift(dataItem);

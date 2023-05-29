@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Select,
   SelectContent,
@@ -14,10 +15,10 @@ type PeriodSelectProps = {
   onPeriodChange: (value: HistoricalPeriods) => void;
 };
 
-const RatesChartPeriodSelect = ({
+function RatesChartPeriodSelect({
   selectedPeriod,
   onPeriodChange,
-}: PeriodSelectProps) => {
+}: PeriodSelectProps): React.JSX.Element {
   return (
     <Select defaultValue={selectedPeriod} onValueChange={onPeriodChange}>
       <SelectTrigger className="w-[120px]">
@@ -34,6 +35,6 @@ const RatesChartPeriodSelect = ({
       </SelectContent>
     </Select>
   );
-};
+}
 
 export default RatesChartPeriodSelect;

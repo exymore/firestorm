@@ -1,10 +1,3 @@
-import React, { useMemo } from 'react';
-import { Currency, HistoricalRatesListItem } from '@/types/currency';
-import useCurrencyStore, {
-  todayRateSelector,
-  yesterdayRateSelector,
-} from '@/store';
-import dayjs from 'dayjs';
 import {
   AreaChart,
   BadgeDelta,
@@ -14,18 +7,23 @@ import {
   Text,
   Title,
 } from '@tremor/react';
+import dayjs from 'dayjs';
+import React, { useMemo } from 'react';
+
+import useCurrencyStore, {
+  todayRateSelector,
+  yesterdayRateSelector,
+} from '@/store';
+import { Currency } from '@/types/currency';
+import { RatesChartData } from '@/types/ratesChart';
 
 type RatesChangeBlockProps = {
   currency: Currency;
 };
 
-type RatesChartDataItem = Pick<HistoricalRatesListItem, 'date'> & {
-  value: number;
-};
-
-type RatesChartData = Array<RatesChartDataItem>;
-
-const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
+function RatesChangeBlock({
+  currency,
+}: RatesChangeBlockProps): React.JSX.Element {
   const latestRate = useCurrencyStore(todayRateSelector)?.[currency.sign];
   const yesterdayRate = useCurrencyStore(yesterdayRateSelector)?.[
     currency.sign
@@ -62,7 +60,7 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
       </Flex>
 
       <Metric>{currencyToUsdRate}</Metric>
-      {chartData.length && (
+      {chartData.length > 0 && (
         <AreaChart
           className="mt-4 h-32"
           data={chartData}
@@ -80,6 +78,6 @@ const RatesChangeBlock = ({ currency }: RatesChangeBlockProps) => {
       )}
     </Card>
   );
-};
+}
 
 export default RatesChangeBlock;

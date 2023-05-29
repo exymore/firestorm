@@ -1,15 +1,19 @@
 import React, { memo } from 'react';
 import CurrencyInputField from 'react-currency-input-field';
-import { Currency } from '@/types/currency';
-import useCurrencyStore from '@/store';
+
 import CurrencyInputDeleteButton from '@/modules/CurrencyInput/components/DeleteButton';
+import useCurrencyStore from '@/store';
+import { Currency } from '@/types/currency';
 
 type CurrencyInputProps = {
   currency: Currency;
   value: string;
 };
 
-function CurrencyInput({ currency, value }: CurrencyInputProps) {
+function CurrencyInput({
+  currency,
+  value,
+}: CurrencyInputProps): React.JSX.Element {
   const { onChangeCurrencyData, deleteFromCurrencyList } = useCurrencyStore();
 
   return (
@@ -29,7 +33,7 @@ function CurrencyInput({ currency, value }: CurrencyInputProps) {
             decimalsLimit={4}
             decimalSeparator="."
             disableAbbreviations
-            onValueChange={(value) => onChangeCurrencyData(value, currency)}
+            onValueChange={(v) => onChangeCurrencyData(currency, v)}
           />
         </div>
 

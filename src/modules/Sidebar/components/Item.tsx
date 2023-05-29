@@ -1,16 +1,17 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
 import { RefreshCw } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SidebarNavItem } from '@/modules/Sidebar';
+import React from 'react';
+
+import { SidebarNavItem } from '@/types/sidebar';
 
 type SidebarItemProps = {
   item: SidebarNavItem;
 };
 
-const SidebarItem = ({ item }: SidebarItemProps) => {
+function SidebarItem({ item }: SidebarItemProps): React.JSX.Element {
   const pathname = usePathname();
 
   return (
@@ -26,6 +27,6 @@ const SidebarItem = ({ item }: SidebarItemProps) => {
       </Link>
     </li>
   );
-};
+}
 
 export default SidebarItem;

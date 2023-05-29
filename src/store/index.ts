@@ -1,20 +1,23 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+
 import { CurrencyApi } from '@/api';
-import { CurrencyState } from '@/types/store';
+import { FetchChartRates } from '@/types/api';
 import {
   Currency,
   CurrencyList,
   HistoricalRatesDataItem,
   HistoricalRatesList,
 } from '@/types/currency';
-import { FetchChartRates } from '@/types/api';
+import { CurrencyState } from '@/types/store';
 
 export const defaultCurrencyList: Array<string> = ['USD', 'EUR', 'GBP', 'CAD'];
 
-export const todayRateSelector = (state: CurrencyState) =>
+type RateSelector = (state: CurrencyState) => HistoricalRatesDataItem;
+
+export const todayRateSelector: RateSelector = (state: CurrencyState) =>
   state.lastWeekRates[0]?.data;
-export const yesterdayRateSelector = (state: CurrencyState) =>
+export const yesterdayRateSelector: RateSelector = (state: CurrencyState) =>
   state.lastWeekRates[1]?.data;
 
 const useCurrencyStore = create<CurrencyState>()(
@@ -55,7 +58,11 @@ const useCurrencyStore = create<CurrencyState>()(
       const todayRate = latestRates[0].data;
       const convertedCurrencyData: HistoricalRatesDataItem = {};
       for (const currency in todayRate) {
-        convertedCurrencyData[currency] = todayRate[currency].toPrecision(4);
+        if (Object.hasOwn(todayRate, currency)) {
+          convertedCurrencyData[currency] = Number(
+            todayRate[currency].toPrecision(4)
+          );
+        }
       }
 
       set({ convertedCurrencyData });
@@ -81,22 +88,20 @@ const useCurrencyStore = create<CurrencyState>()(
           ),
         };
       }),
-    onChangeCurrencyData: (inputValue = '0', currency) =>
+    onChangeCurrencyData: (currency, inputValue = '0') =>
       set((state) => {
         const latestRates = state.lastWeekRates[0].data;
         const updatedCurrencyData = Object.entries(latestRates).map((curr) => {
-          let newCurrencyValue;
           const currentCurrencyRate = latestRates[curr[0]] ?? 0;
           const changedCurrencyRate = latestRates[currency.sign] ?? 0;
 
-          if (curr[0] === currency.sign) {
-            newCurrencyValue = inputValue;
-          } else {
-            newCurrencyValue = (
-              (currentCurrencyRate / changedCurrencyRate) *
-              +inputValue
-            ).toFixed(3);
-          }
+          const newCurrencyValue =
+            curr[0] === currency.sign
+              ? inputValue
+              : (
+                  (currentCurrencyRate / changedCurrencyRate) *
+                  +inputValue
+                ).toFixed(3);
           return [curr[0], newCurrencyValue];
         });
 

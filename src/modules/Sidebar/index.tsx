@@ -1,18 +1,16 @@
+import React from 'react';
+
 import SidebarItem from '@/modules/Sidebar/components/Item';
+import { SidebarNavItem } from '@/types/sidebar';
 
-export type SidebarNavItem = {
-  name: string;
-  href: string;
-};
+const navigation: SidebarNavItem[] = [
+  {
+    name: 'Currency converter',
+    href: '/',
+  },
+];
 
-export default function Sidebar() {
-  const navigation: SidebarNavItem[] = [
-    {
-      name: 'Currency converter',
-      href: '/',
-    },
-  ];
-
+export default function Sidebar(): React.JSX.Element {
   return (
     <nav className="border-r h-full dark:border-slate-800">
       <div className="flex flex-col h-full">

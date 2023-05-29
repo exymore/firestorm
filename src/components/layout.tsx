@@ -1,11 +1,15 @@
-import Sidebar from '../modules/Sidebar';
 import { Col, Grid } from '@tremor/react';
+import React from 'react';
+
+import Sidebar from '../modules/Sidebar';
+
+type RootLayoutProps = {
+  children: React.ReactNode;
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: RootLayoutProps): React.JSX.Element {
   return (
     <Grid numColsSm={1} numColsMd={12} className="h-screen">
       <Col numColSpanMd={2}>

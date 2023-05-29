@@ -1,8 +1,9 @@
-import { defaultCurrencyList } from '@/store';
-import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 
-const ConverterCardSkeleton = () => {
+import Skeleton from '@/components/ui/skeleton';
+import { defaultCurrencyList } from '@/store';
+
+function ConverterCardSkeleton(): React.JSX.Element {
   return (
     <>
       {defaultCurrencyList.map((sign) => (
@@ -11,6 +12,6 @@ const ConverterCardSkeleton = () => {
       <Skeleton className="w-1/3 h-10" />
     </>
   );
-};
+}
 
 export default ConverterCardSkeleton;

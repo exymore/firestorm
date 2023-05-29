@@ -1,9 +1,9 @@
+import { FetchChartRates } from '@/types/api';
 import {
   Currency,
   HistoricalRatesDataItem,
   HistoricalRatesList,
 } from '@/types/currency';
-import { FetchChartRates } from '@/types/api';
 
 export type CurrencyState = {
   currencyList: Array<Currency>;
@@ -23,8 +23,8 @@ export type CurrencyState = {
   addCurrencyToList: (currencySign: string) => void;
   deleteFromCurrencyList: (currencySign: string) => void;
   onChangeCurrencyData: (
-    inputValue: string | undefined,
-    currency: Currency
+    currency: Currency,
+    inputValue: string | undefined
   ) => void;
 
   fetchChartRates: ({

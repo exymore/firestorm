@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Select,
   SelectContent,
@@ -14,10 +15,10 @@ type CurrencySelectProps = {
   onCurrencyChange: (value: string) => void;
 };
 
-const RatesChartCurrencySelect = ({
+function RatesChartCurrencySelect({
   selectedCurrency,
   onCurrencyChange,
-}: CurrencySelectProps) => {
+}: CurrencySelectProps): React.JSX.Element {
   const { currencyList } = useCurrencyStore();
   return (
     <Select defaultValue={selectedCurrency} onValueChange={onCurrencyChange}>
@@ -37,6 +38,6 @@ const RatesChartCurrencySelect = ({
       </SelectContent>
     </Select>
   );
-};
+}
 
 export default RatesChartCurrencySelect;

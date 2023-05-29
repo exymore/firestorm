@@ -1,18 +1,23 @@
-import React, { useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { HistoricalPeriods } from '@/types/currency';
 import dayjs from 'dayjs';
-import useCurrencyStore from '@/store';
-import useRatesChart from '@/hooks/useRatesChart';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useMemo } from 'react';
 
-const LAST_DATE_AVAILABLE = dayjs('2004-05-27');
+import { Button } from '@/components/ui/button';
+import useRatesChart from '@/hooks/useRatesChart';
+import useCurrencyStore from '@/store';
+import { HistoricalPeriods } from '@/types/currency';
+
+const lastDateAvailable = dayjs('2004-05-27');
 
 type RatesChartControlsProps = {
   selectedPeriod: HistoricalPeriods;
 };
 
-const RatesChartControls = ({ selectedPeriod }: RatesChartControlsProps) => {
+type HandleSetSkip = () => void;
+
+function RatesChartControls({
+  selectedPeriod,
+}: RatesChartControlsProps): React.JSX.Element | null {
   const { chartRates, chartRatesLoading } = useCurrencyStore();
   const { skip, limit, setSkip } = useRatesChart();
 
@@ -22,20 +27,21 @@ const RatesChartControls = ({ selectedPeriod }: RatesChartControlsProps) => {
   );
 
   const chartControlsDisabled = useMemo(() => {
-    const lastDate = dayjs(chartRates?.at(-1)?.date);
+    const chartDataLastDate = dayjs(chartRates?.at(-1)?.date);
 
     if (chartRatesLoading) return { backDisabled: true, forwardDisabled: true };
 
     return {
-      backDisabled: lastDate.isSame(LAST_DATE_AVAILABLE),
+      backDisabled: chartDataLastDate.isSame(lastDateAvailable),
       forwardDisabled: skip === 0,
     };
   }, [chartRates, chartRatesLoading, skip]);
 
-  const handleBack = () => setSkip(skip + limit);
-  const handleForward = () => setSkip(skip - limit);
+  const handleBack: HandleSetSkip = () => setSkip(skip + limit);
+  const handleForward: HandleSetSkip = () => setSkip(skip - limit);
 
   if (!show) return null;
+
   return (
     <div className="flex sm:justify-start lg:justify-end">
       <Button
@@ -54,6 +60,6 @@ const RatesChartControls = ({ selectedPeriod }: RatesChartControlsProps) => {
       </Button>
     </div>
   );
-};
+}
 
 export default RatesChartControls;

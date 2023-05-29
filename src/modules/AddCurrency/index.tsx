@@ -1,14 +1,15 @@
 import React from 'react';
+
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
-import { Currency } from '@/types/currency';
 import useCurrencyStore from '@/store';
+import { Currency } from '@/types/currency';
 
-const AddCurrencySelect = () => {
+function AddCurrencySelect(): React.JSX.Element {
   const { addCurrencyToList } = useCurrencyStore();
 
   const currencyToAddList = useCurrencyStore((state) => {
@@ -24,7 +25,7 @@ const AddCurrencySelect = () => {
   });
 
   return (
-    <Select value={''} onValueChange={addCurrencyToList}>
+    <Select value="" onValueChange={addCurrencyToList}>
       <SelectTrigger className="w-1/2">Add Currency</SelectTrigger>
       <SelectContent className="h-[300px]">
         {currencyToAddList.map((listItem: Currency) => (
@@ -35,6 +36,6 @@ const AddCurrencySelect = () => {
       </SelectContent>
     </Select>
   );
-};
+}
 
 export default AddCurrencySelect;

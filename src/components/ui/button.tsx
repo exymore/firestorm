@@ -1,6 +1,6 @@
-import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -35,6 +35,7 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  // eslint-disable-next-line react/require-default-props
   asChild?: boolean;
 }
 

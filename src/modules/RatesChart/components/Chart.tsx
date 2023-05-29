@@ -1,17 +1,18 @@
-import React from 'react';
 import { AreaChart } from '@tremor/react';
+import React from 'react';
+
 import RatesAreaChartSkeleton from '@/components/Skeletons/RatesAreaChartSkeleton';
-import { RatesChartData } from '@/hooks/useRatesChart';
+import { RatesChartData } from '@/types/ratesChart';
 
 type RatesAreaChartProps = {
   chartData: RatesChartData;
   selectedCurrency: string;
 };
 
-const RatesAreaChart = ({
+function RatesAreaChart({
   chartData,
   selectedCurrency,
-}: RatesAreaChartProps) => {
+}: RatesAreaChartProps): React.JSX.Element {
   if (chartData.length === 0) return <RatesAreaChartSkeleton />;
 
   return (
@@ -27,6 +28,6 @@ const RatesAreaChart = ({
       yAxisWidth={60}
     />
   );
-};
+}
 
 export default RatesAreaChart;

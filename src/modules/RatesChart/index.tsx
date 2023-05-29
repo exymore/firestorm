@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react';
 import { Card, Col, Flex, Grid, Title } from '@tremor/react';
+import React, { useMemo } from 'react';
+
+import useRatesChart from '@/hooks/useRatesChart';
+import RatesAreaChart from '@/modules/RatesChart/components/Chart';
 import RatesChartControls from '@/modules/RatesChart/components/Controls';
 import RatesChartCurrencySelect from '@/modules/RatesChart/components/CurrencySelect';
 import RatesChartPeriodSelect from '@/modules/RatesChart/components/PeriodSelect';
-import useRatesChart from '@/hooks/useRatesChart';
-import RatesAreaChart from '@/modules/RatesChart/components/Chart';
 import RatesChartRangeText from '@/modules/RatesChart/components/RangeText';
 
-const RatesChart = () => {
+function RatesChart(): React.JSX.Element {
   const {
     chartData,
 
@@ -18,10 +19,10 @@ const RatesChart = () => {
     onPeriodChange,
   } = useRatesChart();
 
-  const chartRangeText = useMemo(() => {
-    if (chartData.length) {
-      return `From ${chartData?.at(0)?.date} to ${chartData?.at(-1)?.date}`;
-    }
+  const chartRangeText = useMemo<string>(() => {
+    return chartData.length > 0
+      ? `From ${chartData?.at(0)?.date} to ${chartData?.at(-1)?.date}`
+      : '';
   }, [chartData]);
 
   return (
@@ -59,6 +60,6 @@ const RatesChart = () => {
       />
     </Card>
   );
-};
+}
 
 export default RatesChart;

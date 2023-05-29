@@ -1,10 +1,12 @@
-import useCurrencyStore from '@/store';
-import { Currency } from '@/types/currency';
-import CurrencyInput from '@/modules/CurrencyInput';
-import AddCurrencySelect from '../../AddCurrency';
 import React from 'react';
 
-const ConverterCardInput = () => {
+import CurrencyInput from '@/modules/CurrencyInput';
+import useCurrencyStore from '@/store';
+import { Currency } from '@/types/currency';
+
+import AddCurrencySelect from '../../AddCurrency';
+
+function ConverterCardInput(): React.JSX.Element {
   const { selectedCurrencyList, convertedCurrencyData } = useCurrencyStore();
 
   return (
@@ -21,6 +23,6 @@ const ConverterCardInput = () => {
       <AddCurrencySelect />
     </>
   );
-};
+}
 
 export default ConverterCardInput;

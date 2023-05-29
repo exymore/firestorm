@@ -1,5 +1,6 @@
 {
   "extends": [
+    "auto",
     "plugin:prettier/recommended",
     "next/core-web-vitals",
     "plugin:@next/next/recommended"
@@ -9,6 +10,21 @@
     "prettier"
   ],
   "rules": {
+    "unicorn/prefer-module": "off",
+    "unicorn/no-static-only-class": "off",
+    "unicorn/no-array-reduce": "off",
+    "no-console": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "scanjs-rules/identifier_localStorage": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "no-restricted-syntax": [
+      "error",
+      "WithStatement",
+      "BinaryExpression[operator='in']"
+    ],
+    "max-classes-per-file": "off",
+    "global-require": "off",
     "prettier/prettier": [
       "error",
       {

@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
 import { Card, Grid, Title } from '@tremor/react';
-import useCurrencyStore, { defaultCurrencyList } from '@/store';
-import RatesChangeBlock from './components/Block';
+import React, { useMemo } from 'react';
+
 import RatesChangeSkeleton from '@/components/Skeletons/RatesChangeSkeleton';
+import useCurrencyStore, { defaultCurrencyList } from '@/store';
 import { Currency } from '@/types/currency';
 
-const RatesChangeCard = () => {
+import RatesChangeBlock from './components/Block';
+
+function RatesChangeCard(): React.JSX.Element {
   const { selectedCurrencyList, latestRatesLoading } = useCurrencyStore();
 
   const filteredSelectedCurrencyList = useMemo<Array<Currency>>(
@@ -17,7 +19,7 @@ const RatesChangeCard = () => {
     []
   );
 
-  const getCardContent = () => {
+  const getCardContent: () => React.JSX.Element[] = () => {
     if (latestRatesLoading) {
       if (selectedCurrencyList.length > 0) {
         return filteredSelectedCurrencyList.map((currency) => (
@@ -41,6 +43,6 @@ const RatesChangeCard = () => {
       </Grid>
     </Card>
   );
-};
+}
 
 export default RatesChangeCard;

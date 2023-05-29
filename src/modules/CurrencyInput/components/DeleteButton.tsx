@@ -1,17 +1,18 @@
-import React from 'react';
 import { MinusCircleIcon } from 'lucide-react';
+import React from 'react';
 
 type CurrencyInputDeleteButtonProps = {
   currencySign: string;
   deleteFromCurrencyList: (currencySign: string) => void;
 };
 
-const CurrencyInputDeleteButton = ({
+function CurrencyInputDeleteButton({
   currencySign,
   deleteFromCurrencyList,
-}: CurrencyInputDeleteButtonProps) => {
+}: CurrencyInputDeleteButtonProps): JSX.Element {
   return (
     <button
+      type="button"
       className="ml-3 mt-2 h-7 w-7"
       onClick={() => deleteFromCurrencyList(currencySign)}
     >
@@ -22,6 +23,6 @@ const CurrencyInputDeleteButton = ({
       />
     </button>
   );
-};
+}
 
 export default CurrencyInputDeleteButton;
