@@ -1,7 +1,9 @@
 {
-  "name": "client",
-  "version": "0.1.0",
+  "name": "firestorm",
+  "version": "1.0.0",
+  "description": "Financial monitor app",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
