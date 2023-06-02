@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { Button } from '@/components/ui/button';
-import useRatesChart from '@/hooks/useRatesChart';
 import useCurrencyStore from '@/store';
 import { HistoricalPeriods } from '@/types/currency';
 
@@ -11,33 +10,47 @@ const lastDateAvailable = dayjs('2004-05-27');
 
 type RatesChartControlsProps = {
   selectedPeriod: HistoricalPeriods;
+  skip: number;
+  limit: number;
+  setSkip: (skip: number) => void;
 };
 
 type HandleSetSkip = () => void;
 
 function RatesChartControls({
   selectedPeriod,
+  skip,
+  limit,
+  setSkip,
 }: RatesChartControlsProps): React.JSX.Element | null {
   const { chartRates, chartRatesLoading } = useCurrencyStore();
-  const { skip, limit, setSkip } = useRatesChart();
 
   const show = useMemo(
     () => selectedPeriod !== HistoricalPeriods.YEAR,
     [selectedPeriod]
   );
 
-  const chartControlsDisabled = useMemo(() => {
-    const chartDataLastDate = dayjs(chartRates?.at(-1)?.date);
+  const chartDataLastDate = useMemo(() => {
+    return dayjs(chartRates?.at(-1)?.date);
+  }, [chartRates]);
 
+  const chartControlsDisabled = useMemo(() => {
     if (chartRatesLoading) return { backDisabled: true, forwardDisabled: true };
 
+    const currentOffset = dayjs().diff(chartDataLastDate, 'month');
+    const maxOffset = dayjs().diff(lastDateAvailable, 'month');
+
     return {
-      backDisabled: chartDataLastDate.isSame(lastDateAvailable),
+      backDisabled: currentOffset >= maxOffset,
       forwardDisabled: skip === 0,
     };
-  }, [chartRates, chartRatesLoading, skip]);
+  }, [chartDataLastDate, chartRatesLoading, skip]);
 
-  const handleBack: HandleSetSkip = () => setSkip(skip + limit);
+  const handleBack: HandleSetSkip = () => {
+    const maxOffset = chartDataLastDate.diff(lastDateAvailable, 'month');
+    const maxLimit = maxOffset < limit ? maxOffset : limit;
+    setSkip(skip + maxLimit);
+  };
   const handleForward: HandleSetSkip = () => setSkip(skip - limit);
 
   if (!show) return null;

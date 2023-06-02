@@ -16,6 +16,9 @@ function RatesChart(): React.JSX.Element {
     onCurrencyChange,
 
     selectedPeriod,
+    skip,
+    limit,
+    setSkip,
     onPeriodChange,
   } = useRatesChart();
 
@@ -46,7 +49,12 @@ function RatesChart(): React.JSX.Element {
         </Flex>
 
         <div className="lg:justify-end flex items-center gap-2">
-          <RatesChartControls selectedPeriod={selectedPeriod} />
+          <RatesChartControls
+            selectedPeriod={selectedPeriod}
+            skip={skip}
+            setSkip={setSkip}
+            limit={limit}
+          />
           <RatesChartPeriodSelect
             selectedPeriod={selectedPeriod}
             onPeriodChange={onPeriodChange}

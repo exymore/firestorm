@@ -39,6 +39,7 @@ function useRatesChart(): UseRatesChart {
 
   const onCurrencyChange: OnCurrencyChange = (value: string) =>
     setSelectedCurrency(value);
+
   const onPeriodChange: OnPeriodChange = (value: HistoricalPeriods) => {
     if (value === HistoricalPeriods.MONTH) {
       setSkip(0);
