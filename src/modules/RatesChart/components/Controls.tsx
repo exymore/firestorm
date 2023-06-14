@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import useCurrencyStore from '@/store';
 import { HistoricalPeriods } from '@/types/currency';
 
-const lastDateAvailable = dayjs('2004-05-27');
+const lastDateAvailable = dayjs('1999-06-14');
 
 type RatesChartControlsProps = {
   selectedPeriod: HistoricalPeriods;
