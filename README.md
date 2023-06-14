@@ -5,7 +5,7 @@
 **Available at:** https://firestorm-six.vercel.app/
 
 **Features:**
-  * Currency rates from May 2004
+  * Currency rates from June 1999
   * Currency converter
   * Rate change by day / month / year chart
   * Weekly change chart for every selected currency
